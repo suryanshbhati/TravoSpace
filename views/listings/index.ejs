@@ -1,0 +1,253 @@
+<% layout('layouts/boilerplate') -%>
+
+    <body>
+        <style>
+            /* #filters {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+            } */
+
+            /* .filter {
+                text-align: center;
+                margin-left: 2rem;
+                margin-top: 2rem;
+                opacity: 0.7;
+            }
+
+            .filter:hover {
+                opacity: 1;
+                cursor: pointer;
+            }
+
+            .filter p {
+                font-size: 0.8rem;
+            }
+
+            .tax-info {
+                display: none;
+            } */
+
+            /* .tax-toggle {
+                border: 1px solid black;
+                border-radius: 1rem;
+                height: 3.25rem;
+                padding: 1rem;
+                margin-left: 3rem;
+                display: flex;
+                align-items: center;
+                margin-top: 0.6rem;
+            } */
+
+            /* @media (max-width: 768px) { */
+            /* .filter:nth-child(n+5) {
+                    /* Hide from 5th filter onward */
+            /* display: none;
+                } */
+
+            /* .tax-toggle {
+                    display: none !important;
+                } */
+            /* } */
+
+            #filters {
+                display: flex;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 1rem;
+                gap: 1.5rem;
+                scrollbar-width: none;
+                /* Firefox */
+            }
+
+            #filters::-webkit-scrollbar {
+                display: none;
+                /* Chrome, Safari */
+            }
+
+            .filter {
+                display: inline-block;
+                text-align: center;
+                opacity: 0.7;
+                min-width: 70px;
+                flex-shrink: 0;
+            }
+
+            .filter:hover {
+                opacity: 1;
+                cursor: pointer;
+            }
+
+            .filter p {
+                font-size: 0.75rem;
+                margin-top: 0.3rem;
+            }
+
+            /* Compact toggle */
+            .tax-toggle {
+                display: inline-flex;
+                align-items: center;
+                border: 1px solid black;
+                border-radius: 1rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .tax-toggle .form-check-label {
+                font-size: 0.75rem;
+                margin-left: 0.4rem;
+            }
+
+            .tax-info {
+                display: none;
+            }
+
+
+            /* Optional scroll hint */
+            .scroll-hint {
+                font-size: 1rem;
+                opacity: 0.4;
+                margin-left: auto;
+                display: none;
+            }
+
+            @media (max-width: 768px) {
+                .scroll-hint {
+                    display: inline-block;
+                }
+            }
+
+            .title-price-line {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: nowrap;
+                gap: 0.5rem;
+            }
+
+            .price-line {
+                white-space: nowrap;
+                /* Prevent line-breaks in price block */
+                font-weight: 500;
+            }
+        </style>
+
+        <div id="filters">
+            <div class="filter">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-bed"></i></div>
+                <p>Rooms</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-mountain-city"></i></div>
+                <p>Iconic cities</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-mountain"></i></div>
+                <p>Mountains</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-brands fa-fort-awesome"></i></div>
+                <p>Castles</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-person-swimming"></i></div>
+                <p>Amazing Pools</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-campground"></i></div>
+                <p>Camping</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-cow"></i></div>
+                <p>Farms</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-snowflake"></i></div>
+                <p>Arctic</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-igloo"></i></div>
+                <p>Domes</p>
+            </div>
+
+            <div class="tax-toggle">
+                <div class="form-check-reverse form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                    <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+                </div>
+            </div>
+
+            <div class="scroll-hint">⇄</div>
+        </div>
+
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+            <% for(let listing of allListings) { %>
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+                    <div class="card col listing-card">
+                        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image"
+                            style="height: 20rem;">
+                        <div class="card-img-overlay"></div>
+                        <div class="card-body">
+                            <div class="title-price-line">
+                                <span class="listing-title">
+                                    <b><%= listing.title %></b>
+                                </span>
+                                <span class="price-line">
+                                    ₹<span class="base-price" data-price="<%= listing.price %>">
+                                        <%= listing.price.toLocaleString("en-IN") %>
+                                    </span> / night <span class="gst-text d-none">+18% GST</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <% } %>
+        </div>
+
+        <!-- <script>
+            let taxSwitch = document.getElementById("switchCheckDefault");
+            taxSwitch.addEventListener("click", () => {
+                let taxInfo = document.getElementsByClassName("tax-info");
+                for (info of taxInfo) {
+                    if (info.style.display != "inline") {
+                        info.style.display = "inline";
+                    } else {
+                        info.style.display = "none";
+                    }
+                }
+            });
+        </script> -->
+
+        <script>
+            const taxSwitch = document.getElementById("switchCheckDefault");
+
+            taxSwitch.addEventListener("change", () => {
+                const priceElems = document.getElementsByClassName("base-price");
+                const gstTexts = document.getElementsByClassName("gst-text");
+
+                for (let i = 0; i < priceElems.length; i++) {
+                    let priceEl = priceElems[i];
+                    let gstEl = gstTexts[i];
+                    let base = Number(priceEl.getAttribute("data-price"));
+
+                    if (taxSwitch.checked) {
+                        let total = Math.round(base * 1.18);
+                        priceEl.innerText = total.toLocaleString("en-IN");
+                        gstEl.classList.remove("d-none");
+                    } else {
+                        priceEl.innerText = base.toLocaleString("en-IN");
+                        gstEl.classList.add("d-none");
+                    }
+                }
+            });
+        </script>
+
+
+
+    </body>
